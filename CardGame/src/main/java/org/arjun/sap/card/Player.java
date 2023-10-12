@@ -3,9 +3,8 @@ package org.arjun.sap.card;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Player {
     private static final Logger LOG = LoggerFactory.getLogger(Player.class);
@@ -15,39 +14,35 @@ public class Player {
     }
 
     private final String name;
-    Stack<Integer> draw, discard;
+    Deque<Card> draw;
+    Deque<Card> discard;
 
-    public Player(String name,Stack<Integer> draw) {
+    public Player(String name, Deque<Card> draw) {
         this.name = name;
         this.draw = draw;
-        this.discard = new Stack<>();
+        this.discard = new ArrayDeque<>();
     }
 
-    public int getStackSize(){
+    public int getStackSize() {
         return draw.size() + discard.size();
     }
 
 
-    public void setDraw(Stack<Integer> draw) {
+    public void setDraw(Deque<Card> draw) {
         this.draw = draw;
     }
 
 
-    public void win(List<Integer> cards) {
+    public void win(Deque<Card> cards) {
         discard.addAll(cards);
     }
 
 
-    public Integer play() {
-        if (draw.isEmpty()) {
-            if (!discard.isEmpty()) {
-                Collections.shuffle(discard);
-                setDraw(discard);
-                discard = new Stack<>();
-                LOG.info("Player {}: Draw pile empty. Shuffled the discard pile into draw pile...",this.getName());
-            } else {
-
-            }
+    public Card play() {
+        if (draw.isEmpty() && (!discard.isEmpty())) {
+            setDraw(Utilities.shuffleCards(discard));
+            discard = new ArrayDeque<>();
+            LOG.info("Player {}: Draw pile empty. Shuffled the discard pile into draw pile...", this.getName());
         }
         return draw.pop();
     }
