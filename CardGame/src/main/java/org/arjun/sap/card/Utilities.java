@@ -7,8 +7,12 @@ import java.util.Deque;
 
 public class Utilities {
 
-    public static Deque<Integer> shuffleCards(Deque<Integer> stack) {
-        ArrayList<Integer> cardList = new ArrayList<>(stack);
+    private Utilities() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static Deque<Card> shuffleCards(Deque<Card> stack) {
+        ArrayList<Card> cardList = new ArrayList<>(stack);
         Collections.shuffle(cardList);
         return new ArrayDeque<>(cardList);
     }

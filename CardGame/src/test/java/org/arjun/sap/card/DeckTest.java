@@ -4,8 +4,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Collections;
-
 import static org.junit.Assert.*;
 
 
@@ -25,7 +23,6 @@ public class DeckTest {
 
     @Test
     public void testShuffle() {
-        assertFalse(deck.cards.contains(11));
         Deck deck2 = new Deck();
         assertTrue(deck.cards.containsAll(deck2.cards));
         assertTrue(deck2.cards.containsAll(deck.cards));
@@ -33,9 +30,8 @@ public class DeckTest {
 
     @Test
     public void testRange() {
-        assertFalse(deck.cards.stream().anyMatch(x -> x > 10));
-        assertFalse(deck.cards.stream().anyMatch(x -> x < 1));
-        assertEquals(Integer.valueOf(10), Collections.max(deck.cards));
+        assertFalse(deck.cards.stream().anyMatch(x -> x.show() > 10));
+        assertFalse(deck.cards.stream().anyMatch(x -> x.show() < 1));
     }
 
     @Test
@@ -45,15 +41,16 @@ public class DeckTest {
 
     @Test
     public void testShowCards() {
-        deck.showCards();
+        deck.showAll();
+        assertEquals(40, deck.cards.size());
     }
 
     @Test
     public void testCut() {
-        assertNotNull(deck.cut());
+        assertNotNull(deck.slice());
         assertEquals(20, deck.cards.size());
-        assertNotNull(deck.cut());
-        assertEquals(20, deck.cards.size());
-        assertEquals(0,deck.cards.size());
+        assertEquals(20, deck.slice().size());
+        assertTrue(deck.slice().isEmpty());
+        assertEquals(0, deck.cards.size());
     }
 }

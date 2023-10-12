@@ -14,10 +14,10 @@ public class Player {
     }
 
     private final String name;
-    Deque<Integer> draw;
-    Deque<Integer> discard;
+    Deque<Card> draw;
+    Deque<Card> discard;
 
-    public Player(String name, Deque<Integer> draw) {
+    public Player(String name, Deque<Card> draw) {
         this.name = name;
         this.draw = draw;
         this.discard = new ArrayDeque<>();
@@ -28,22 +28,21 @@ public class Player {
     }
 
 
-    public void setDraw(Deque<Integer> draw) {
+    public void setDraw(Deque<Card> draw) {
         this.draw = draw;
     }
 
 
-    public void win(Deque<Integer> cards) {
+    public void win(Deque<Card> cards) {
         discard.addAll(cards);
     }
 
 
-    public Integer play() {
+    public Card play() {
         if (draw.isEmpty() && (!discard.isEmpty())) {
             setDraw(Utilities.shuffleCards(discard));
             discard = new ArrayDeque<>();
             LOG.info("Player {}: Draw pile empty. Shuffled the discard pile into draw pile...", this.getName());
-
         }
         return draw.pop();
     }

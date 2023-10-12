@@ -3,9 +3,7 @@ package org.arjun.sap.card;
 import org.junit.Test;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.Stack;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -14,27 +12,27 @@ import static org.mockito.Mockito.*;
 
 public class GameTest {
 
-     final Game game = spy(new Game());
+    final Game game = spy(new Game());
 
     Player p1;
     Player p2;
 
     @Test
     public void testPlay() {
-        Deque<Integer> stack = new ArrayDeque<>();
-        stack.push(1);
-        stack.push(2);
+        Deque<Card> stack = new ArrayDeque<>();
+        stack.push(new Card(1));
+        stack.push(new Card(2));
         p1 = spy(new Player("1", stack));
         stack = new ArrayDeque<>();
-        stack.push(2);
-        stack.push(2);
+        stack.push(new Card(2));
+        stack.push(new Card(2));
         p2 = spy(new Player("2", stack));
-        when(p1.play()).thenReturn(2);
-        when(p2.play()).thenReturn(3);
+        when(p1.play()).thenReturn(new Card(2));
+        when(p2.play()).thenReturn(new Card(3));
         game.init();
         doCallRealMethod().when(game).setPlayers(any(), any());
         game.setPlayers(p1, p2);
-        Deque<Integer> cards = new ArrayDeque<>();
+        Deque<Card> cards = new ArrayDeque<>();
         doCallRealMethod().when(game).playRound(any());
         Player winner = game.playRound(cards);
         verify(game, times(1)).playRound(any());
@@ -43,20 +41,20 @@ public class GameTest {
 
     @Test
     public void testPlayDraw() {
-        Deque<Integer> stack = new ArrayDeque<>();
-        stack.push(1);
-        stack.push(2);
+        Deque<Card> stack = new ArrayDeque<>();
+        stack.push(new Card(1));
+        stack.push(new Card(2));
         p1 = spy(new Player("1", stack));
         stack = new ArrayDeque<>();
-        stack.push(1);
-        stack.push(3);
+        stack.push(new Card(1));
+        stack.push(new Card(3));
         p2 = spy(new Player("2", stack));
-        when(p1.play()).thenReturn(1).thenReturn(2);
-        when(p2.play()).thenReturn(1).thenReturn(3);
+        when(p1.play()).thenReturn(new Card(1)).thenReturn(new Card(2));
+        when(p2.play()).thenReturn(new Card(1)).thenReturn(new Card(3));
         game.init();
         doCallRealMethod().when(game).setPlayers(any(), any());
         game.setPlayers(p1, p2);
-        Deque<Integer> cards = new ArrayDeque<>();
+        Deque<Card> cards = new ArrayDeque<>();
         doCallRealMethod().when(game).playRound(any());
         Player winner = game.playRound(cards);
 //        verify(game, times(2)).playRound(any());

@@ -20,12 +20,12 @@ public class Game {
 
     public void init() {
         Deck deck = new Deck();
-        player1 = new Player("1", deck.cut());
-        player2 = new Player("2", deck.cut());
+        player1 = new Player("1", deck.slice());
+        player2 = new Player("2", deck.slice());
     }
 
     public void start() {
-        Deque<Integer> playedCards = new ArrayDeque<>();
+        Deque<Card> playedCards = new ArrayDeque<>();
         Player winner;
         do {
             winner = playRound(playedCards);
@@ -36,19 +36,19 @@ public class Game {
 
     }
 
-    protected Player playRound(Deque<Integer> round) {
+    protected Player playRound(Deque<Card> round) {
         Player winner;
         int player1StackSize = player1.getStackSize();
         int player2StackSize = player2.getStackSize();
-        Integer card1 = player1.play();
-        Integer card2 = player2.play();
+        Card card1 = player1.play();
+        Card card2 = player2.play();
         round.add(card1);
         round.add(card2);
-        LOG.debug("Player {} ({} cards): {}", player1.getName(), player1StackSize, card1);
-        LOG.debug("Player {} ({} cards): {}", player2.getName(), player2StackSize, card2);
-        if (card1 > card2) {
+        LOG.debug("Player {} ({} cards): {}", player1.getName(), player1StackSize, card1.show());
+        LOG.debug("Player {} ({} cards): {}", player2.getName(), player2StackSize, card2.show());
+        if (card1.show() > card2.show()) {
             winner = player1;
-        } else if (card2 > card1) {
+        } else if (card2.show() > card1.show()) {
             winner = player2;
         } else {
             LOG.debug("No winner in this round\n");
