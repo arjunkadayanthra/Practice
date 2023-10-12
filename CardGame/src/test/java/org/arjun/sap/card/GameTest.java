@@ -2,8 +2,9 @@ package org.arjun.sap.card;
 
 import org.junit.Test;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Deque;
 import java.util.Stack;
 
 import static org.junit.Assert.assertEquals;
@@ -13,18 +14,18 @@ import static org.mockito.Mockito.*;
 
 public class GameTest {
 
-    Game game = spy(new Game());
+     final Game game = spy(new Game());
 
     Player p1;
     Player p2;
 
     @Test
     public void testPlay() {
-        Stack<Integer> stack = new Stack<>();
+        Deque<Integer> stack = new ArrayDeque<>();
         stack.push(1);
         stack.push(2);
         p1 = spy(new Player("1", stack));
-        stack = new Stack<>();
+        stack = new ArrayDeque<>();
         stack.push(2);
         stack.push(2);
         p2 = spy(new Player("2", stack));
@@ -33,7 +34,7 @@ public class GameTest {
         game.init();
         doCallRealMethod().when(game).setPlayers(any(), any());
         game.setPlayers(p1, p2);
-        List<Integer> cards = new ArrayList<>();
+        Deque<Integer> cards = new ArrayDeque<>();
         doCallRealMethod().when(game).playRound(any());
         Player winner = game.playRound(cards);
         verify(game, times(1)).playRound(any());
@@ -42,11 +43,11 @@ public class GameTest {
 
     @Test
     public void testPlayDraw() {
-        Stack<Integer> stack = new Stack<>();
+        Deque<Integer> stack = new ArrayDeque<>();
         stack.push(1);
         stack.push(2);
         p1 = spy(new Player("1", stack));
-        stack = new Stack<>();
+        stack = new ArrayDeque<>();
         stack.push(1);
         stack.push(3);
         p2 = spy(new Player("2", stack));
@@ -55,7 +56,7 @@ public class GameTest {
         game.init();
         doCallRealMethod().when(game).setPlayers(any(), any());
         game.setPlayers(p1, p2);
-        List<Integer> cards = new ArrayList<>();
+        Deque<Integer> cards = new ArrayDeque<>();
         doCallRealMethod().when(game).playRound(any());
         Player winner = game.playRound(cards);
 //        verify(game, times(2)).playRound(any());
@@ -68,8 +69,8 @@ public class GameTest {
         game.init();
         assertNotNull(game.player1);
         assertNotNull(game.player2);
-        assertEquals(20,game.player1.getStackSize());
-        assertEquals(20,game.player2.getStackSize());
+        assertEquals(20, game.player1.getStackSize());
+        assertEquals(20, game.player2.getStackSize());
     }
 
     @Test
